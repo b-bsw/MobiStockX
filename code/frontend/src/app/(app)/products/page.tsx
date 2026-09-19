@@ -6,8 +6,10 @@ import { useState } from "react";
 
 export default function Page() {
 
+  /* ตัวเก็บข้อมูลการเลือกหมวดหมู่ */
   const [activeCategory, setActiveCategory] = useState("ทั้งหมด");
 
+  /* ตัวเก็บข้อมูลการพิมพ์ช่องค้นหา */
   const [search, setSearch] = useState("");
 
   const products = [
@@ -101,10 +103,12 @@ export default function Page() {
     },
   ];
 
+  /* ตัวกรองสินค้า */
   const filteredProducts = products.filter((product) => {
   const matchSearch =
     product.name.toLowerCase().includes(search.toLowerCase());
 
+  /* ตรวจหมวดหมู่ */
   const matchCategory =
     activeCategory === "ทั้งหมด" ||
     product.category === activeCategory;
@@ -118,10 +122,10 @@ export default function Page() {
     /* สีพื้นหลัง */
     <div className="min-h-screen bg-[#dae8ff] p-6">
 
-      {/* กล่องขาวใหม่ */}
-      <div className="min-h-[calc(100vh-64px)] rounded-[20px] bg-white shadow-md">
+      {/* กรอบสีขาวหลัก */}
+      <div className="min-h-[calc(100vh-48px)] rounded-[20px] bg-white shadow-md">
         
-        {/* หัวข้อหน้า */}
+        {/* หัวข้อด้านบน */}
         <div className="flex items-center justify-between border-b border-[#EBEBEB] px-10 py-5">
 
           <div>
@@ -211,7 +215,7 @@ export default function Page() {
 
         {/* ตารางสินค้า */}
         <div className="mx-6 overflow-hidden rounded-[20px] border border-[#E5E7EB]">
-          <div className="max-h-[480px] overflow-y-auto">
+          <div className="max-h-[495px] overflow-y-auto">
 
             {/* หัวข้อ */}
             <div className="grid grid-cols-[2fr_1.5fr_1.2fr_0.8fr_0.8fr_0.8fr_1.3fr] items-center border-b bg-[#F8FAFC] px-7 py-4 text-[16px] font-medium text-gray-800">
@@ -233,7 +237,7 @@ export default function Page() {
                   >
 
                     <div>
-                      <p className="text-[18px] text-gray-900">
+                      <p className="text-[16px] text-gray-900">
                         {product.name}
                       </p>
 
@@ -242,28 +246,28 @@ export default function Page() {
                       </p>
                     </div>
 
-                    <span className="text-[16px] text-gray-700">
+                    <span className="text-[16px] text-gray-500">
                       {product.sku}
                     </span>
 
-                    <span className="w-fit rounded-full bg-[#DCEEFF] px-5 py-2 text-[16px] text-[#2580D9]">
+                    <span className="w-fit rounded-full bg-[#DCEEFF] px-5 py-1 text-[14px] text-[#2580D9]">
                       {product.category}
                     </span>
 
-                    <span>{product.price}</span>
+                    <span className="text-[16px] text-gray-700">฿{product.price}</span>
 
-                    <span>{product.cost}</span>
+                    <span className="text-[16px] text-gray-700">฿{product.cost}</span>
 
-                    <span className="w-fit rounded-full bg-[#DDF6E2] px-5 py-2 text-[16px] text-[#249447]">
+                    <span className="w-fit rounded-full bg-[#DDF6E2] px-5 py-1 text-[14px] text-[#249447]">
                       {product.stock}
                     </span>
 
                     <div className="flex gap-2">
-                      <button className="rounded-full bg-[#DCEEFF] px-5 py-2 text-[#2580D9]">
+                      <button className="rounded-full bg-[#DCEEFF] px-5 py-1 text-[14px] text-[#2580D9]">
                         แก้ไข
                       </button>
 
-                      <button className="rounded-full bg-[#FFE4E4] px-5 py-2 text-[#E53935]">
+                      <button className="rounded-full bg-[#FFE4E4] px-5 py-1 text-[14px] text-[#E53935]">
                         ลบ
                       </button>
                     </div>

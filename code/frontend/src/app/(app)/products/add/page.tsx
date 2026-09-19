@@ -1,10 +1,108 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function AddProductPage() {
 
+  /* ส้วนข้อมูลสินค้า */
   const [name, setName] = useState("");
+  const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
+  const [sku, setSku] = useState("");
+  const [category, setCategory] = useState("");
+  /* ส่วนราคา */
+  const [price, setPrice] = useState("");
+  const [cost, setCost] = useState("");
+  /* ส่วนสต๊อก */
+  const [stock, setStock] = useState("");
+  const [minStock, setMinStock] = useState("");
+
+  const [submitted, setSubmitted] = useState(false);
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const brandRef = useRef<HTMLInputElement>(null);
+  const modelRef = useRef<HTMLInputElement>(null);
+  const skuRef = useRef<HTMLInputElement>(null);
+  const categoryRef = useRef<HTMLSelectElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
+  const costRef = useRef<HTMLInputElement>(null);
+  const stockRef = useRef<HTMLInputElement>(null);
+
+  const minStockRef = useRef<HTMLInputElement>(null);
+
+  const scrollToField = (ref: React.RefObject<HTMLInputElement | HTMLSelectElement | null>) => {
+    const field = ref.current;
+    if (!field) return;
+
+    field.focus({ preventScroll: true });
+
+    const container = field.closest(".overflow-y-auto") as HTMLElement | null;
+
+    if (container) {
+      const fieldPosition = field.getBoundingClientRect();
+      const containerPosition = container.getBoundingClientRect();
+
+      container.scrollTo({
+        top:
+          container.scrollTop +
+          (fieldPosition.top - containerPosition.top) -
+          300,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  /* ตรวจสอบข้อมูลครบมั้ย */
+  const handleSubmit = () => {
+    setSubmitted(true);
+
+    if (!name) {
+      scrollToField(nameRef);
+      return;
+    }
+
+    if (!brand) {
+      scrollToField(brandRef);
+      return;
+    }
+
+    if (!model) {
+      scrollToField(modelRef);
+      return;
+    }
+
+    if (!sku) {
+      scrollToField(skuRef);
+      return;
+    }
+
+    if (!category) {
+      scrollToField(categoryRef);
+      return;
+    }
+
+    if (!price) {
+      scrollToField(priceRef);
+      return;
+    }
+
+    if (!cost) {
+      scrollToField(costRef);
+      return;
+    }
+
+    if (!stock) {
+      scrollToField(stockRef);
+      return;
+    }
+
+    if (!minStock) {
+      scrollToField(minStockRef);
+      return;
+    }
+
+    alert("เพิ่มสินค้าสำเร็จ");
+  };
 
   return (
 
@@ -55,12 +153,23 @@ export default function AddProductPage() {
                 </label>
 
                 <input
+                  ref={nameRef}
                   type="text"
                   placeholder="กรอกชื่อสินค้า"
                   value={name}
                   onChange={(e) => setName(e.target.value)}   
-                  className="h-[52px] w-full rounded-full border border-[#E5E7EB] px-6 text-[16px] outline-none focus:border-[#7FBFFF]"
+                  className={`h-[52px] w-full rounded-full border px-6 text-[16px] outline-none focus:border-[#7FBFFF] ${
+                    submitted && !name
+                      ? "border-red-500"
+                      : "border-[#E5E7EB] focus:border-[#7FBFFF]"
+                  }`}
                 />
+
+                {submitted && !name && (
+                  <p className="mt-2 px-4 text-[14px] text-red-500">
+                    กรุณากรอกชื่อสินค้า
+                  </p>
+                )}
 
               </div>
 
@@ -73,10 +182,23 @@ export default function AddProductPage() {
                 </label>
 
                 <input
+                  ref={brandRef}
                   type="text"
                   placeholder="กรอกแบรนด์"
-                  className="h-[52px] w-full rounded-full border border-[#E5E7EB] px-6 text-[16px] outline-none focus:border-[#7FBFFF]"
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                  className={`h-[52px] w-full rounded-full border px-6 text-[16px] outline-none focus:border-[#7FBFFF] ${
+                    submitted && !brand
+                      ? "border-red-500"
+                      : "border-[#E5E7EB] focus:border-[#7FBFFF]"
+                  }`}
                 />
+
+                {submitted && !brand && (
+                  <p className="mt-2 px-4 text-[14px] text-red-500">
+                    กรุณากรอกแบรนด์
+                  </p>
+                )}
 
               </div>
 
@@ -89,10 +211,23 @@ export default function AddProductPage() {
                 </label>
 
                 <input
+                  ref={modelRef}
                   type="text"
                   placeholder="กรอกรุ่น / สี / ความจุ"
-                  className="h-[52px] w-full rounded-full border border-[#E5E7EB] px-6 text-[16px] outline-none focus:border-[#7FBFFF]"
+                  value={model}
+                  onChange={(e) => setModel(e.target.value)}
+                  className={`h-[52px] w-full rounded-full border px-6 text-[16px] outline-none focus:border-[#7FBFFF] ${
+                    submitted && !model
+                      ? "border-red-500"
+                      : "border-[#E5E7EB] focus:border-[#7FBFFF]"
+                  }`}
                 />
+
+                {submitted && !model && (
+                  <p className="mt-2 px-4 text-[14px] text-red-500">
+                    กรุณากรอกรุ่น / สี / ความจุ
+                  </p>
+                )}
 
               </div>
 
@@ -105,10 +240,23 @@ export default function AddProductPage() {
                 </label>
 
                 <input
+                  ref={skuRef}
                   type="text"
                   placeholder="กรอกรหัส SKU"
-                  className="h-[52px] w-full rounded-full border border-[#E5E7EB] px-6 text-[16px] outline-none focus:border-[#7FBFFF]"
+                  value={sku}
+                  onChange={(e) => setSku(e.target.value)}
+                  className={`h-[52px] w-full rounded-full border px-6 text-[16px] outline-none focus:border-[#7FBFFF] ${
+                    submitted && !sku
+                      ? "border-red-500"
+                      : "border-[#E5E7EB] focus:border-[#7FBFFF]"
+                  }`}
                 />
+
+                {submitted && !sku && (
+                  <p className="mt-2 px-4 text-[14px] text-red-500">
+                    กรุณากรอกรหัส SKU
+                  </p>
+                )}
 
               </div>
 
@@ -121,13 +269,26 @@ export default function AddProductPage() {
                 </label>
 
                 <select
-                  className="h-[52px] w-full rounded-full border border-[#E5E7EB] bg-white px-6 text-[16px] text-gray-500 outline-none focus:border-[#7FBFFF]"
+                  ref={categoryRef}
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className={`h-[52px] w-full rounded-full border bg-white px-6 text-[16px] text-gray-500 outline-none focus:border-[#7FBFFF] ${
+                    submitted && !category
+                      ? "border-red-500 text-gray-500"
+                      : "border-[#E5E7EB] text-gray-700 focus:border-[#7FBFFF]"
+                  }`}
                 >
                   <option value="">เลือกหมวดหมู่</option>
                   <option value="Flagship">Flagship</option>
                   <option value="Mid-Range">Mid-Range</option>
                   <option value="Budget">Budget</option>
                 </select>
+
+                {submitted && !category && (
+                  <p className="mt-2 px-4 text-[14px] text-red-500">
+                    กรุณาเลือกหมวดหมู่
+                  </p>
+                )}
 
               </div>
 
@@ -153,10 +314,23 @@ export default function AddProductPage() {
                 </label>
 
                 <input
+                  ref={priceRef}
                   type="number"
                   placeholder="0.00"
-                  className="h-[52px] w-full rounded-full border border-[#E5E7EB] px-6 text-[16px] outline-none focus:border-[#7FBFFF]"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className={`h-[52px] w-full rounded-full border px-6 text-[16px] outline-none focus:border-[#7FBFFF] ${
+                    submitted && !price
+                      ? "border-red-500"
+                      : "border-[#E5E7EB] focus:border-[#7FBFFF]"
+                  }`}
                 />
+
+                {submitted && !price && (
+                  <p className="mt-2 px-4 text-[14px] text-red-500">
+                    กรุณากรอกราคาขาย
+                  </p>
+                )}
 
               </div>
 
@@ -169,10 +343,23 @@ export default function AddProductPage() {
                 </label>
 
                 <input
+                  ref={costRef}
                   type="number"
                   placeholder="0.00"
-                  className="h-[52px] w-full rounded-full border border-[#E5E7EB] px-6 text-[16px] outline-none focus:border-[#7FBFFF]"
+                  value={cost}
+                  onChange={(e) => setCost(e.target.value)}
+                  className={`h-[52px] w-full rounded-full border px-6 text-[16px] outline-none focus:border-[#7FBFFF] ${
+                    submitted && !cost
+                      ? "border-red-500"
+                      : "border-[#E5E7EB] focus:border-[#7FBFFF]"
+                  }`}
                 />
+
+                {submitted && !cost && (
+                  <p className="mt-2 px-4 text-[14px] text-red-500">
+                    กรุณากรอกราคาต้นทุน
+                  </p>
+                )}
 
               </div>
 
@@ -198,10 +385,23 @@ export default function AddProductPage() {
                 </label>
 
                 <input
+                  ref={stockRef}
                   type="number"
                   placeholder="กรอกจำนวนสต๊อก"
-                  className="h-[52px] w-full rounded-full border border-[#E5E7EB] px-6 text-[16px] outline-none focus:border-[#7FBFFF]"
+                  value={stock}
+                  onChange={(e) => setStock(e.target.value)}
+                  className={`h-[52px] w-full rounded-full border px-6 text-[16px] outline-none focus:border-[#7FBFFF] ${
+                    submitted && !stock
+                      ? "border-red-500"
+                      : "border-[#E5E7EB] focus:border-[#7FBFFF]"
+                  }`}
                 />
+
+                {submitted && !stock && (
+                  <p className="mt-2 px-4 text-[14px] text-red-500">
+                    กรุณากรอกจำนวนสต๊อก
+                  </p>
+                )}
 
               </div>
 
@@ -214,10 +414,23 @@ export default function AddProductPage() {
                 </label>
 
                 <input
+                  ref={minStockRef}
                   type="number"
                   placeholder="กรอกจำนวนขั้นต่ำ"
-                  className="h-[52px] w-full rounded-full border border-[#E5E7EB] px-6 text-[16px] outline-none focus:border-[#7FBFFF]"
+                  value={minStock}
+                  onChange={(e) => setMinStock(e.target.value)}
+                  className={`h-[52px] w-full rounded-full border border-[#E5E7EB] px-6 text-[16px] outline-none focus:border-[#7FBFFF] ${
+                    submitted && !minStock
+                      ? "border-red-500"
+                      : "border-[#E5E7EB] focus:border-[#7FBFFF]"
+                  }`}
                 />
+
+                {submitted && !minStock && (
+                  <p className="mt-2 px-4 text-[14px] text-red-500">
+                    กรุณากรอกจำนวนขั้นต่ำที่แจ้งเตือน
+                  </p>
+                )}
 
               </div>
 
@@ -233,7 +446,7 @@ export default function AddProductPage() {
               ยกเลิก
             </button>
 
-            <button className="rounded-full bg-[#7FBFFF] px-8 py-2 text-[18px] text-white">
+            <button onClick={handleSubmit} className="rounded-full bg-[#7FBFFF] px-8 py-2 text-[18px] text-white">
               เพิ่มสินค้า
             </button>
 

@@ -1,8 +1,12 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AddProductPage() {
+
+  const router = useRouter();
+
 
   /* ส้วนข้อมูลสินค้า */
   const [name, setName] = useState("");
@@ -101,7 +105,29 @@ export default function AddProductPage() {
       return;
     }
 
-    alert("เพิ่มสินค้าสำเร็จ");
+    const newProduct = {
+      id: Date.now(),
+      name,
+      brand,
+      model,
+      sku,
+      category,
+      price: Number(price),
+      cost: Number(cost),
+      stock: Number(stock),
+    };
+
+    const existingProducts = JSON.parse(
+      localStorage.getItem("products") || "[]"
+    );
+
+    localStorage.setItem(
+      "products",
+      JSON.stringify([...existingProducts, newProduct])
+    );
+
+    router.push("/products");
+
   };
 
   return (
@@ -125,7 +151,10 @@ export default function AddProductPage() {
             </p>
           </div>
 
-          <button className="rounded-full border border-[#D1D5DB] px-7 py-2 text-[18px] text-gray-600">
+          <button
+            onClick={() => router.push("/products")}
+            className="rounded-full border border-[#D1D5DB] px-7 py-2 text-[18px] text-gray-600"
+          >
             ← กลับรายการสินค้า
           </button>
 
@@ -442,11 +471,15 @@ export default function AddProductPage() {
           {/* ปุ่มด้านล่าง */}
           <div className="flex justify-end gap-4 pb-2">
 
-            <button className="rounded-full border border-[#D1D5DB] px-8 py-2 text-[18px] text-gray-600">
+            <button
+              onClick={() => router.push("/products")}
+              className="rounded-full border border-[#D1D5DB] px-8 py-2 text-[18px] text-gray-600"
+            >
               ยกเลิก
             </button>
 
-            <button onClick={handleSubmit} className="rounded-full bg-[#7FBFFF] px-8 py-2 text-[18px] text-white">
+            <button onClick={handleSubmit} 
+              className="rounded-full bg-[#7FBFFF] px-8 py-2 text-[18px] text-white">
               เพิ่มสินค้า
             </button>
 

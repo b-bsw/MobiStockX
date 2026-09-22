@@ -2,7 +2,10 @@
 
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+
 
 export default function Page() {
 
@@ -12,7 +15,10 @@ export default function Page() {
   /* ตัวเก็บข้อมูลการพิมพ์ช่องค้นหา */
   const [search, setSearch] = useState("");
 
-  const products = [
+  const router = useRouter();
+
+
+  const initialProducts = [
     {
       id: 1,
       name: "iPhone 15 Pro Max",
@@ -103,6 +109,18 @@ export default function Page() {
     },
   ];
 
+  const [products, setProducts] = useState(initialProducts);
+
+  useEffect(() => {
+    const savedProducts = localStorage.getItem("products");
+
+    if (savedProducts) {
+      setProducts(JSON.parse(savedProducts));
+    } else {
+      localStorage.setItem("products", JSON.stringify(initialProducts));
+    }
+  }, []);
+
   /* ตัวกรองสินค้า */
   const filteredProducts = products.filter((product) => {
   const matchSearch =
@@ -138,7 +156,10 @@ export default function Page() {
           </div>
           
           {/* ปุ่มเพิ่มสินค้า */}
-          <button className="rounded-full bg-[#7FBFFF] px-7 py-2 text-[20px] text-white">
+          <button
+            onClick={() => router.push("/products/add")}
+            className="rounded-full bg-[#7FBFFF] px-7 py-2 text-[20px] text-white"
+          >
             + เพิ่มสินค้า
           </button>
 
@@ -263,7 +284,10 @@ export default function Page() {
                     </span>
 
                     <div className="flex gap-2">
-                      <button className="rounded-full bg-[#DCEEFF] px-5 py-1 text-[14px] text-[#2580D9]">
+                      <button
+                        onClick={() => router.push(`/products/edit/${product.id}`)}
+                        className="rounded-full bg-[#DCEEFF] px-5 py-1 text-[14px] text-[#2580D9]"
+                      >
                         แก้ไข
                       </button>
 

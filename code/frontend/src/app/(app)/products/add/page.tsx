@@ -1,7 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
-
+import { useRef, useState, useEffect } from "react";
+import axios from "axios";
+interface Category {
+  categoryId: string;
+  categoryNameTh: string;
+}
 export default function AddProductPage() {
 
   /* ส้วนข้อมูลสินค้า */
@@ -9,6 +13,7 @@ export default function AddProductPage() {
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [sku, setSku] = useState("");
+  const [categories, setCategories] = useState<Category[]>([]);
   const [category, setCategory] = useState("");
   /* ส่วนราคา */
   const [price, setPrice] = useState("");
@@ -104,6 +109,18 @@ export default function AddProductPage() {
     alert("เพิ่มสินค้าสำเร็จ");
   };
 
+  const getCategories = async ()=> {
+    try {
+      const response = await axios.get("/api/v1/categories");
+      setCategories(response.data.data);
+    } catch (error) {
+      alert("ไม่สามารถดึงหมวดหมู่ได้");
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
   return (
 
     /* สีพื้นหลังสีฟ้า */
@@ -279,9 +296,9 @@ export default function AddProductPage() {
                   }`}
                 >
                   <option value="">เลือกหมวดหมู่</option>
-                  <option value="Flagship">Flagship</option>
-                  <option value="Mid-Range">Mid-Range</option>
-                  <option value="Budget">Budget</option>
+                  {categories.map((cat) =>{
+                    return <option key={cat.categoryId} value={cat.categoryId}>{cat.categoryNameTh}</option>
+                  })}
                 </select>
 
                 {submitted && !category && (
